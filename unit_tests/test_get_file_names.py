@@ -1,5 +1,5 @@
 from unittest import TestCase
-from main import get_file_names
+from utilities import get_file_names
 
 class TestGet_file_names(TestCase):
     def test_gets_filenames(self):

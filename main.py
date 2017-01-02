@@ -1,16 +1,21 @@
-from PIL import Image
-from subprocess import check_output
-from re import split
+from utilities import get_file_names, small_pixel_mult, create_pixel_set, compare_group_exhaustively
 
-def get_file_names(dir_path):
-    file_names = check_output(["ls", dir_path]).split("\n")[:-1]
-    if dir_path[-1] == '/':
-        return [dir_path + file_name for file_name in file_names]
-    return [dir_path + '/' + file_name for file_name in file_names]
+file_names = get_file_names("test_images")
 
-#file_names = get_file_names("test_images")
-#print file_names
+# Psuedo hash function, sums rgb values of 15 different pixels.
+# Goal is to create small groups of similar pics to compare exhaustively
+val_to_pic = {}
+small_pixel_set = create_pixel_set(file_names)
+print small_pixel_set
+for pic_name in file_names:
+    hash = small_pixel_mult(pic_name, small_pixel_set)
+    if hash in val_to_pic:
+        val_to_pic[hash].append(pic_name)
+    else:
+        val_to_pic[hash] = [pic_name]
 
-#im = Image.open("test_images/flavortown.jpg")
+print val_to_pic
+# Compare images w/ the same "hash" values to see if they're truly identical.  If so, flag them
+for val in val_to_pic:
+    compare_group_exhaustively(val_to_pic[val])
 
-#print "Hello world"
