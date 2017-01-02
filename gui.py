@@ -6,6 +6,7 @@ app = 0
 def perform_search(button_name):
     dir_name = app.getEntry("dir_area")
     print dir_name
+    app.stop()
     search_directory(dir_name)
 
 # top slice - CREATE the GUI
